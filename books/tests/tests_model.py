@@ -1,4 +1,6 @@
 from django.test import TestCase
+from django.utils import timezone
+
 from books.tests.util_faker.book_factory import BookFactory
 from books.tests.util_faker.authors import AUTHORS
 from books.tests.util_faker.purchase_factory import PurchaseFactory
@@ -9,23 +11,19 @@ class BookTest(TestCase):
         self.book = BookFactory()
 
     def test_book_slug(self):
-        # print(self.book.slug)
         self.assertNotEqual(self.book.slug, '')
         self.assertIn(self.book.author.name, AUTHORS)
 
 
 class PurchaseTest(TestCase):
     def setUp(self) -> None:
-        self.purchases = PurchaseFactory()
-        print('my purcheses are:', self.purchases)
+        self.purchase = PurchaseFactory()
 
-    def test_purchase_basic(self):
-        self.assertGreater(self.purchases.books.count(), 0)
+    def test_purchase_book_count(self):
+        self.assertGreater(self.purchase.books.count(), 0)
 
     def test_total(self):
         total = 0
-        for book in self.purchases.books.all():
-            print('price is', book.price)
-            print(type(book.price))
+        for book in self.purchase.books.all():
             total += book.price
-        self.assertEqual(total, self.purchases.total)
+        self.assertEqual(total, self.purchase.total)

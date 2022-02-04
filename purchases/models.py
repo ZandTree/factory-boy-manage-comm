@@ -14,8 +14,7 @@ class Purchase(models.Model):
     @property
     def total(self):
         total_books = self.books.all().aggregate(summ=Sum('price'))
-        print('model purchase total is:', total_books)
         return total_books.get('summ', 'not found')
 
     def __str__(self):
-        return f'{self.customer.name} bought for ${self.total}'
+        return f'{self.customer.name} bought for {self.total}'

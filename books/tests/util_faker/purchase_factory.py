@@ -1,10 +1,11 @@
 import random
-
 import factory
-
+import faker
 from books.tests.util_faker.book_factory import BookFactory
 from purchases.models import Purchase
 from fam.models import Customer
+
+fk = faker.Faker()
 
 
 class CustomerFactory(factory.django.DjangoModelFactory):
@@ -41,11 +42,8 @@ class PurchaseFactory(factory.django.DjangoModelFactory):
     def books(self, created, extracted, **kwargs):
         if created:
             some_books = BookFactory.create_batch(size=random.randint(2, 5))
-
             for book in some_books:
-                # print(book.price)
-                print('created book with title', book.title)
-                # self.books.add(book)
+                self.books.add(book)
             return
         if extracted:
             for book in extracted:
