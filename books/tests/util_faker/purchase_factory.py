@@ -1,6 +1,9 @@
 import random
 import factory
 import faker
+import pytz
+from django.utils import timezone
+
 from books.tests.util_faker.book_factory import BookFactory
 from purchases.models import Purchase
 from fam.models import Customer
@@ -35,7 +38,8 @@ class PurchaseFactory(factory.django.DjangoModelFactory):
     placed_at = factory.Faker(
         'date_time_this_year',
         after_now=False,
-        before_now=True
+        before_now=True,
+        tzinfo=timezone.get_current_timezone()
     )
 
     @factory.post_generation
